@@ -1,0 +1,69 @@
+services:
+
+  # ── Banco de dados ───────────────────────────────────────────────────────────
+  mariadb:
+    image: mariadb:10.11
+    container_name: glpi_db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE:      glpi
+      MARIADB_USER:          glpi
+      MARIADB_PASSWORD:      ${MARIADB_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - glpi_net
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ── Aplicação GLPI ───────────────────────────────────────────────────────────
+  glpi:
+    image: diouxx/glpi:latest
+    container_name: glpi_app
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      TIMEZONE: America/Sao_Paulo
+    volumes:
+      - glpi_files:/var/www/html/glpi/files
+      - glpi_plugins:/var/www/html/glpi/plugins
+      - glpi_log:/var/log/apache2
+      - glpi_config:/var/www/html/glpi/config
+      - glpi_marketplace:/var/www/html/glpi/marketplace
+    expose:
+      - "80"
+    networks:
+      - glpi_net
+
+  # ── Proxy reverso ───────────────────────────────────────────────────────────
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: glpi_proxy
+    restart: unless-stopped
+    depends_on:
+      - glpi
+    ports:
+      - "${GLPI_PORT:-80}:80"
+    volumes:
+      - ./nginx/glpi.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - glpi_net
+
+volumes:
+  mariadb_data:
+  glpi_files:
+  glpi_plugins:
+  glpi_log:
+  glpi_config:
+  glpi_marketplace:
+
+networks:
+  glpi_net:
+    driver: bridge
