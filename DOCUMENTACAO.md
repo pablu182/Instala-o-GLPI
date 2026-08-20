@@ -1,5 +1,4 @@
 # GLPI — Documentação Operacional
-**Grupo Inbetta · Versão 1.0 · Agosto 2026**
 
 ---
 
@@ -64,8 +63,8 @@ nano .env
 Edite o `.env` com senhas fortes. **Não use as senhas de exemplo em produção.**
 
 ```
-MARIADB_ROOT_PASSWORD=UmaSenhaForteAqui!2026
-MARIADB_PASSWORD=OutraSenhaForteAqui!2026
+MARIADB_ROOT_PASSWORD=Inserir uma nova senha aqui
+MARIADB_PASSWORD=Inserir uma nova senha aqui
 GLPI_PORT=80
 ```
 
@@ -400,5 +399,3 @@ docker compose down
 ```
 
 ---
-
-*Dúvidas: falar com Pablo Abreu — pablo.abreu@inbetta.com.br*
