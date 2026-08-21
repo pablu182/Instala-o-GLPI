@@ -1,6 +1,6 @@
 #!/bin/bash
 # backup.sh — Backup do GLPI (banco + arquivos)
-# Grupo Inbetta — Versão 1.0
+# Versão 1.0
 #
 # Uso:
 #   ./scripts/backup.sh
