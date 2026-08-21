@@ -236,7 +236,7 @@ Para organizar o inventário por setor (Expedição, Financeiro, RH...):
 1. **Configuração → Localizações → Adicionar**
 2. Crie uma hierarquia:
    ```
-   Grupo Inbetta
+   EMPRESA
    ├── Planta Gravataí
    │   ├── Expedição
    │   ├── Produção
